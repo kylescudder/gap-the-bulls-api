@@ -96,50 +96,50 @@ export const getUsersByTeam = async (
   }
 };
 
-export const createUser = async (
-  req: Request<{}, {}, CreateUserRequest>,
-  res: Response
-): Promise<void> => {
-  try {
-    const { name, teamId } = req.body;
-
-    // Verify team exists
-    const teamExists = await prisma.team.findUnique({
-      where: { id: teamId },
-    });
-
-    if (!teamExists) {
-      const response: ApiResponse<null> = {
-        success: false,
-        error: 'Team not found',
-      };
-      res.status(400).json(response);
-      return;
-    }
-
-    const user = await prisma.user.create({
-      data: { name, teamId },
-      include: {
-        team: true,
-        scores: true,
-      },
-    });
-
-    const response: ApiResponse<typeof user> = {
-      success: true,
-      data: user,
-      message: 'User created successfully',
-    };
-
-    res.status(201).json(response);
-  } catch (error) {
-    const response: ApiResponse<null> = {
-      success: false,
-      error: 'Failed to create user',
-    };
-    res.status(500).json(response);
-  }
-};
+// export const createUser = async (
+//   req: Request<{}, {}, CreateUserRequest>,
+//   res: Response
+// ): Promise<void> => {
+//   try {
+//     const { name, teamId } = req.body;
+//
+//     // Verify team exists
+//     const teamExists = await prisma.team.findUnique({
+//       where: { id: teamId },
+//     });
+//
+//     if (!teamExists) {
+//       const response: ApiResponse<null> = {
+//         success: false,
+//         error: 'Team not found',
+//       };
+//       res.status(400).json(response);
+//       return;
+//     }
+//
+//     const user = await prisma.user.create({
+//       data: { name, teamId },
+//       include: {
+//         team: true,
+//         scores: true,
+//       },
+//     });
+//
+//     const response: ApiResponse<typeof user> = {
+//       success: true,
+//       data: user,
+//       message: 'User created successfully',
+//     };
+//
+//     res.status(201).json(response);
+//   } catch (error) {
+//     const response: ApiResponse<null> = {
+//       success: false,
+//       error: 'Failed to create user',
+//     };
+//     res.status(500).json(response);
+//   }
+// };
 
 export const updateUser = async (
   req: Request<{ id: string }, {}, UpdateUserRequest>,

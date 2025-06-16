@@ -8,12 +8,15 @@ datasource db {
 }
 
 model User {
-  id     Int     @id @default(autoincrement())
-  name   String
-  teamId Int
-  team   Team    @relation(fields: [teamId], references: [id])
-  scores Score[]
-
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  googleId   String?  @unique
+  avatarUrl  String?
+  teamId     Int?
+  team       Team?    @relation(fields: [teamId], references: [id])
+  scores     Score[]
+  
   @@map("users")
 }
 

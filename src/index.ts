@@ -2,10 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import session from 'express-session';
+import passport from './config/passport';
 import { connectDatabase, disconnectDatabase } from './database/connection';
 import teamRoutes from './routes/teamRoutes';
 import scoreRoutes from './routes/scoreRoutes';
 import userRoutes from './routes/userRoutes';
+import authRoutes from './routes/authRoutes';
 
 dotenv.config();
 
@@ -18,7 +21,19 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Sessions (required by passport to persist login)
+app.use(session({
+  secret: process.env.SESSION_SECRET as string,
+  resave: false,
+  saveUninitialized: false,
+}));
+
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Routes
+app.use('/auth', authRoutes);
 app.use('/api/teams', teamRoutes);
 app.use('/api/scores', scoreRoutes);
 app.use('/api/users', userRoutes);
@@ -44,10 +59,11 @@ app.use('*', (req, res) => {
 const startServer = async (): Promise<void> => {
   try {
     await connectDatabase();
-    
+
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`📊 Health check: http://localhost:${PORT}/health`);
+      console.log(`📊 Health: http://localhost:${PORT}/health`);
+      console.log(`🔑 Google OAuth: http://localhost:${PORT}/auth/google`);
       console.log(`👥 Teams API: http://localhost:${PORT}/api/teams`);
       console.log(`🎯 Scores API: http://localhost:${PORT}/api/scores`);
       console.log(`👤 Users API: http://localhost:${PORT}/api/users`);
