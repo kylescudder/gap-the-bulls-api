@@ -1,6 +1,5 @@
 import passport from 'passport';
-import { Strategy as GoogleStrategy, Profile } from
-  'passport-google-oauth20';
+import { Strategy as GoogleStrategy, Profile } from 'passport-google-oauth20';
 import { findOrCreateGoogleUser } from '../services/authService';
 
 // Serializing only the user.id
@@ -10,10 +9,9 @@ passport.serializeUser<number>((user, done) => {
 
 passport.deserializeUser(async (id: number, done) => {
   try {
-    const user = await import('../database/connection')
-      .then(({ prisma }) =>
-        prisma.user.findUnique({ where: { id } })
-      );
+    const user = await import('../database/connection').then(({ prisma }) =>
+      prisma.user.findUnique({ where: { id } })
+    );
     done(null, user);
   } catch (err) {
     done(err);

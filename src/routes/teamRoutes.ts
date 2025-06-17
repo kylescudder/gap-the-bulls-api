@@ -5,6 +5,7 @@ import {
   createTeam,
   updateTeam,
   deleteTeam,
+  assignUserToTeam,
 } from '../controllers/teamController';
 
 const router = Router();
@@ -14,5 +15,6 @@ router.get('/:id', getTeamById);
 router.post('/', createTeam);
 router.put('/:id', updateTeam);
 router.delete('/:id', deleteTeam);
+router.post('/:teamId/users/:userId', assignUserToTeam);
 
 export default router;

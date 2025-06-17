@@ -160,3 +160,58 @@ export const deleteTeam = async (
     res.status(500).json(response);
   }
 };
+
+export const assignUserToTeam = async (
+  req: Request<{ teamId: string; userId: string }>,
+  res: Response
+): Promise<void> => {
+  const teamId = parseInt(req.params.teamId, 10);
+  const userId = parseInt(req.params.userId, 10);
+
+  try {
+    // Verify team exists
+    const team = await prisma.team.findUnique({ where: { id: teamId } });
+    if (!team) {
+      const response: ApiResponse<null> = {
+        success: false,
+        error: 'Team not found',
+      };
+      res.status(404).json(response);
+      return;
+    }
+
+    // Verify user exists
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      const response: ApiResponse<null> = {
+        success: false,
+        error: 'User not found',
+      };
+      res.status(404).json(response);
+      return;
+    }
+
+    // Update the user’s teamId
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { teamId },
+      include: {
+        team: true,
+        scores: true,
+      },
+    });
+
+    const response: ApiResponse<typeof updatedUser> = {
+      success: true,
+      data: updatedUser,
+      message: `User ${userId} assigned to team ${teamId} successfully`,
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const response: ApiResponse<null> = {
+      success: false,
+      error: 'Failed to assign user to team',
+    };
+    res.status(500).json(response);
+  }
+};
