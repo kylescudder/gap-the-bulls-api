@@ -32,6 +32,7 @@ model Score {
   id     Int  @id @default(autoincrement())
   userId Int
   score  Int
+  dateTime DateTime @default(now())
   user   User @relation(fields: [userId], references: [id])
 
   @@map("scores")
