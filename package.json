@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "author": "Kyle Scudder & Jordan Carter Wightwick",
+  "license": "MIT",
+  "homepage": "https://jordancw97.github.io/GapTheBulls/Index.html"
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
