@@ -14,7 +14,8 @@
     "db:generate": "prisma generate",
     "db:studio": "prisma studio",
     "format": "prettier --write \"src/**/*.{ts,js,json,md}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,js,json,md}\""
+    "format:check": "prettier --check \"src/**/*.{ts,js,json,md}\"",
+    "prepare": "husky"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -34,6 +35,7 @@
     "@types/node": "^20.10.5",
     "@types/passport": "^1.0.10",
     "@types/passport-google-oauth20": "^2.0.12",
+    "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"
